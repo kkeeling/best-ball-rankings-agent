@@ -46,7 +46,7 @@ def fetch_player_rankings(url: str) -> list[dict]:
         return players
 
 def main():
-    url = "https://example.com/best-ball-rankings"  # Replace with the actual URL
+    url = "https://establishtherun.com/etrs-top-300-for-draftkings-best-ball-rankings-updates-9am-daily/"  # Replace with the actual URL
     rankings = fetch_player_rankings(url)
     print(f"Fetched {len(rankings)} player rankings")
     print(rankings[:5])  # Print the first 5 rankings as a sample
