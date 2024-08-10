@@ -80,6 +80,12 @@ def login(context, username, password):
         
         logging.info(f"Login successful. Current URL: {page.url}")
 
+        # Set cookies explicitly after successful login
+        cookies = context.cookies()
+        logging.info(f"Number of cookies after login: {len(cookies)}")
+        for cookie in cookies:
+            logging.info(f"Cookie: {cookie['name']} = {cookie['value']}")
+
         # Additional check: Try to access a protected resource
         try:
             logging.info("Attempting to access a protected resource")
