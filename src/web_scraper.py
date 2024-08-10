@@ -154,13 +154,28 @@ def download_csv(page, url, output_path):
         Exception: If CSV download fails
     """
     try:
-        page.goto(url)
-        with page.expect_download() as download_info:
+        logging.info(f"Navigating to URL: {url}")
+        page.goto(url, timeout=60000)  # Increase page load timeout to 60 seconds
+        
+        logging.info("Waiting for CSV download link to be visible")
+        page.wait_for_selector('a.ninja-forms-field[href*=".csv"]', state="visible", timeout=30000)
+        
+        logging.info("Initiating CSV download")
+        with page.expect_download(timeout=120000) as download_info:  # Increase download timeout to 120 seconds
             page.click('a.ninja-forms-field[href*=".csv"]')
+        
         download = download_info.value
+        logging.info(f"Download initiated, saving to: {output_path}")
         download.save_as(output_path)
-    except PlaywrightTimeoutError:
-        raise Exception("CSV download timed out")
+        logging.info("CSV download completed successfully")
+    except PlaywrightTimeoutError as e:
+        logging.error(f"CSV download timed out: {str(e)}")
+        print_page_content(page)  # Print page content for debugging
+        raise Exception(f"CSV download timed out: {str(e)}")
+    except Exception as e:
+        logging.error(f"An error occurred during CSV download: {str(e)}")
+        print_page_content(page)  # Print page content for debugging
+        raise
 
 def main():
     url = "https://establishtherun.com/etrs-top-300-for-draftkings-best-ball-rankings-updates-9am-daily/"
@@ -195,13 +210,19 @@ def main():
         try:
             page = login(context, username, password)
             rankings = fetch_player_rankings(page, url)
-            download_csv(page, url, csv_output_path)
+            
+            try:
+                download_csv(page, url, csv_output_path)
+                print(f"CSV file downloaded to {csv_output_path}")
+            except Exception as csv_error:
+                logging.error(f"Failed to download CSV: {str(csv_error)}")
+                print("CSV download failed, but continuing with fetched rankings.")
 
             print(f"Fetched {len(rankings)} player rankings")
             print(rankings[:5])  # Print the first 5 rankings as a sample
-            print(f"CSV file downloaded to {csv_output_path}")
 
         except Exception as e:
+            logging.error(f"An error occurred: {str(e)}")
             print(f"An error occurred: {str(e)}")
         finally:
             context.close()
