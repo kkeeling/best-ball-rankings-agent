@@ -30,6 +30,9 @@ def login(context, username, password):
         username (str): Username for login
         password (str): Password for login
 
+    Returns:
+        Page: Logged in page object
+
     Raises:
         Exception: If login fails
     """
@@ -164,7 +167,11 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        context = browser.new_context(accept_downloads=True)
+        context = browser.new_context(
+            accept_downloads=True,
+            viewport={'width': 1920, 'height': 1080},
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        )
 
         try:
             page = login(context, username, password)
