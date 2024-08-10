@@ -38,11 +38,25 @@ def login(page, username, password):
         logging.info("Waiting for navigation after login")
         page.wait_for_load_state("networkidle", timeout=60000)  # Increase timeout to 60 seconds
 
-        if "wp-admin" not in page.url:
-            logging.error(f"Login failed. Current URL: {page.url}")
-            raise Exception("Login failed")
+        # Check for error messages
+        error_message = page.query_selector('.login .message')
+        if error_message:
+            error_text = error_message.inner_text()
+            logging.error(f"Login error message: {error_text}")
+            raise Exception(f"Login failed: {error_text}")
+
+        # Check if we're still on the login page
+        if "wp-login.php" in page.url:
+            logging.error(f"Still on login page. Current URL: {page.url}")
+            raise Exception("Login failed: Redirected back to login page")
+
+        # Check if we're on the wp-admin page or any other page within the site
+        if not (page.url.startswith("https://establishtherun.com/wp-admin") or 
+                page.url.startswith("https://establishtherun.com/")):
+            logging.error(f"Unexpected redirect. Current URL: {page.url}")
+            raise Exception(f"Login failed: Unexpected redirect to {page.url}")
         
-        logging.info("Login successful")
+        logging.info(f"Login successful. Current URL: {page.url}")
     except PlaywrightTimeoutError as e:
         logging.error(f"Login timed out: {str(e)}")
         raise Exception(f"Login timed out: {str(e)}")
