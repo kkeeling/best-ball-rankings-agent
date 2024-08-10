@@ -12,6 +12,15 @@ from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeo
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+def print_page_content(page):
+    """
+    Print the current page content for debugging purposes.
+    """
+    logging.info("Current page content:")
+    content = page.content()
+    print(content[:1000])  # Print first 1000 characters to avoid overwhelming the console
+    logging.info("End of page content")
+
 def login(page, username, password):
     """
     Log in to the website using provided credentials.
@@ -47,8 +56,17 @@ def login(page, username, password):
 
         # Check if we're still on the login page
         if "wp-login.php" in page.url:
-            logging.error(f"Still on login page. Current URL: {page.url}")
-            raise Exception("Login failed: Redirected back to login page")
+            # Check for specific error messages on the login page
+            login_error = page.query_selector('#login_error')
+            if login_error:
+                error_text = login_error.inner_text()
+                logging.error(f"Login error: {error_text}")
+                print_page_content(page)
+                raise Exception(f"Login failed: {error_text}")
+            else:
+                logging.error(f"Still on login page. Current URL: {page.url}")
+                print_page_content(page)
+                raise Exception("Login failed: Redirected back to login page")
 
         # Check if we're on the wp-admin page or any other page within the site
         if not (page.url.startswith("https://establishtherun.com/wp-admin") or 
@@ -57,6 +75,18 @@ def login(page, username, password):
             raise Exception(f"Login failed: Unexpected redirect to {page.url}")
         
         logging.info(f"Login successful. Current URL: {page.url}")
+
+        # Additional check: Try to access a protected resource
+        try:
+            logging.info("Attempting to access a protected resource")
+            page.goto("https://establishtherun.com/wp-admin/", timeout=30000)
+            if "wp-login.php" in page.url:
+                logging.error("Failed to access protected resource. Redirected to login page.")
+                raise Exception("Login seems successful, but unable to access protected resources")
+            logging.info("Successfully accessed protected resource")
+        except PlaywrightTimeoutError:
+            logging.error("Timeout while accessing protected resource")
+            raise Exception("Login seems successful, but timed out while accessing protected resources")
     except PlaywrightTimeoutError as e:
         logging.error(f"Login timed out: {str(e)}")
         raise Exception(f"Login timed out: {str(e)}")
