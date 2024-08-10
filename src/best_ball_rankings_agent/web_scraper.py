@@ -22,12 +22,12 @@ def fetch_player_rankings(url: str) -> list[dict]:
         page.goto(url)
 
         # Wait for the table to load
-        page.wait_for_selector('table#rankings-table')
+        page.wait_for_selector('table[data-ninja_table_instance="ninja_table_instance_0"]')
 
         # Extract player data from the table
         players = page.evaluate("""
             () => {
-                const rows = Array.from(document.querySelectorAll('table#rankings-table tbody tr'));
+                const rows = Array.from(document.querySelectorAll('table[data-ninja_table_instance="ninja_table_instance_0"] tbody tr'));
                 return rows.map(row => {
                     const cells = row.querySelectorAll('td');
                     return {
