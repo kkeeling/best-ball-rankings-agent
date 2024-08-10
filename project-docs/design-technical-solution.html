@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design & Technical Solution: Best Ball Rankings Agent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Design & Technical Solution: Best Ball Rankings Agent</h1>
+
+    <p>This document outlines the proposed technical and design solution for the Best Ball Rankings Agent project, based on the problem statement, core requirements, and specified technology preferences.</p>
+
+    <div class="section">
+        <h2>1. Overall Architecture</h2>
+        <p>The Best Ball Rankings Agent will be implemented as a Python-based command-line application following the Sequential Agent Workflow pattern. The application will be structured into modular components, each responsible for a specific part of the workflow.</p>
+    </div>
+
+    <div class="section">
+        <h2>2. Technology Stack</h2>
+        <ul>
+            <li><strong>Programming Language:</strong> Python 3.12</li>
+            <li><strong>Virtual Environment:</strong> Conda</li>
+            <li><strong>Web Scraping:</strong> Playwright (latest version)</li>
+            <li><strong>Scheduling:</strong> Schedule (latest version)</li>
+            <li><strong>Command Line Interface:</strong> Colorama (latest version), Halo (latest version)</li>
+            <li><strong>Data Storage:</strong> Supabase Python Client (latest version)</li>
+            <li><strong>AI Processing:</strong> Anthropic Claude API (Claude 3.5 Sonnet)</li>
+            <li><strong>HTTP Requests:</strong> Requests (latest version)</li>
+            <li><strong>CSV Processing:</strong> Pandas (latest version)</li>
+            <li><strong>Environment Variables:</strong> python-dotenv (latest version)</li>
+            <li><strong>Logging:</strong> Built-in Python logging module</li>
+            <li><strong>Notifications:</strong> slack_sdk (latest version)</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. Component Design</h2>
+        <h3>3.1 Scheduler</h3>
+        <p>Utilizes the Schedule library to trigger the agent daily at 9:30 AM.</p>
+
+        <h3>3.2 Web Scraper</h3>
+        <p>Implements Playwright to navigate websites, handle authentication, and retrieve data.</p>
+
+        <h3>3.3 Data Processor</h3>
+        <p>Uses Pandas for CSV manipulation and the Anthropic Claude API for AI-powered data formatting.</p>
+
+        <h3>3.4 Data Storage</h3>
+        <p>Integrates with Supabase for storing retrieved and processed data.</p>
+
+        <h3>3.5 DraftKings Uploader</h3>
+        <p>Employs Playwright for navigating the DraftKings website and uploading formatted rankings.</p>
+
+        <h3>3.6 Notifier</h3>
+        <p>Implements Slack notifications using the slack_sdk library to send updates about the agent's operations and results.</p>
+
+        <h3>3.7 Command Line Interface</h3>
+        <p>Utilizes Colorama for colored output and Halo for loading indicators.</p>
+    </div>
+
+    <div class="section">
+        <h2>4. Workflow Implementation</h2>
+        <p>The main script will orchestrate the following sequence:</p>
+        <ol>
+            <li>Schedule trigger (9:30 AM daily)</li>
+            <li>Web scraping of establishtherun.com</li>
+            <li>Data processing and AI formatting</li>
+            <li>Data storage in Supabase</li>
+            <li>Upload to DraftKings</li>
+            <li>Send Slack notification</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>5. Error Handling and Logging</h2>
+        <p>Implement comprehensive try-except blocks for each major operation. Use Python's built-in logging module to record information, warnings, and errors to both console and file outputs. Critical errors will also trigger Slack notifications.</p>
+    </div>
+
+    <div class="section">
+        <h2>6. Security Considerations</h2>
+        <p>Store sensitive information (API keys, passwords, Slack tokens) in environment variables using python-dotenv. Implement secure handling of credentials during web scraping, API interactions, and Slack notifications.</p>
+    </div>
+
+    <div class="section">
+        <h2>7. Scalability and Future Enhancements</h2>
+        <p>Design the application with modularity in mind, allowing for easy addition of new data sources, fantasy sports platforms, or notification methods. Use configuration files to manage variable elements like URLs, data mappings, and notification preferences.</p>
+    </div>
+
+    <div class="section">
+        <h2>8. Testing Strategy</h2>
+        <p>Implement unit tests for individual components and integration tests for the complete workflow. Use Python's unittest framework and consider adding mock objects for external dependencies, including Slack notifications.</p>
+    </div>
+
+    <p>This design and technical solution provides a robust framework for implementing the Best Ball Rankings Agent, addressing all core requirements while maintaining flexibility for future enhancements.</p>
+</body>
+</html>
