@@ -6,7 +6,11 @@ This module handles web scraping functionality using Playwright.
 
 import os
 import csv
+import logging
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def login(page, username, password):
     """
@@ -21,16 +25,30 @@ def login(page, username, password):
         Exception: If login fails
     """
     try:
-        page.goto("https://establishtherun.com/wp-login.php")
+        logging.info("Navigating to login page")
+        page.goto("https://establishtherun.com/wp-login.php", timeout=60000)  # Increase timeout to 60 seconds
+        
+        logging.info("Filling in login credentials")
         page.fill('input[name="log"]', username)
         page.fill('input[name="pwd"]', password)
+        
+        logging.info("Submitting login form")
         page.click('input[name="wp-submit"]')
-        page.wait_for_load_state("networkidle")
+        
+        logging.info("Waiting for navigation after login")
+        page.wait_for_load_state("networkidle", timeout=60000)  # Increase timeout to 60 seconds
 
         if "wp-admin" not in page.url:
+            logging.error(f"Login failed. Current URL: {page.url}")
             raise Exception("Login failed")
-    except PlaywrightTimeoutError:
-        raise Exception("Login timed out")
+        
+        logging.info("Login successful")
+    except PlaywrightTimeoutError as e:
+        logging.error(f"Login timed out: {str(e)}")
+        raise Exception(f"Login timed out: {str(e)}")
+    except Exception as e:
+        logging.error(f"An error occurred during login: {str(e)}")
+        raise
 
 def fetch_player_rankings(page, url):
     """
