@@ -177,7 +177,20 @@ def main():
             accept_downloads=True,
             viewport={'width': 1920, 'height': 1080},
             user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            java_script_enabled=True,
+            ignore_https_errors=True,
+            has_touch=False,
+            is_mobile=False,
+            locale='en-US',
         )
+
+        # Enable cookies
+        context.add_cookies([{
+            'name': 'wordpress_test_cookie',
+            'value': 'WP Cookie check',
+            'domain': 'establishtherun.com',
+            'path': '/',
+        }])
 
         try:
             page = login(context, username, password)
