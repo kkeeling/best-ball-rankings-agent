@@ -21,12 +21,12 @@ def print_page_content(page):
     print(content[:1000])  # Print first 1000 characters to avoid overwhelming the console
     logging.info("End of page content")
 
-def login(page, username, password):
+def login(context, username, password):
     """
     Log in to the website using provided credentials.
 
     Args:
-        page: Playwright page object
+        context: Playwright browser context
         username (str): Username for login
         password (str): Password for login
 
@@ -34,6 +34,7 @@ def login(page, username, password):
         Exception: If login fails
     """
     try:
+        page = context.new_page()
         logging.info("Navigating to login page")
         page.goto("https://establishtherun.com/wp-login.php", timeout=60000)  # Increase timeout to 60 seconds
         
@@ -87,6 +88,8 @@ def login(page, username, password):
         except PlaywrightTimeoutError:
             logging.error("Timeout while accessing protected resource")
             raise Exception("Login seems successful, but timed out while accessing protected resources")
+        
+        return page
     except PlaywrightTimeoutError as e:
         logging.error(f"Login timed out: {str(e)}")
         raise Exception(f"Login timed out: {str(e)}")
@@ -161,10 +164,10 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
+        context = browser.new_context(accept_downloads=True)
 
         try:
-            login(page, username, password)
+            page = login(context, username, password)
             rankings = fetch_player_rankings(page, url)
             download_csv(page, url, csv_output_path)
 
@@ -175,6 +178,7 @@ def main():
         except Exception as e:
             print(f"An error occurred: {str(e)}")
         finally:
+            context.close()
             browser.close()
 
 if __name__ == "__main__":
