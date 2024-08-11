@@ -87,9 +87,20 @@ def transform_data(df):
         DataProcessingError: If there's an error during data transformation
     """
     try:
-        # Rename columns to match DraftKings format (adjust as needed)
+        # Load DraftKings pre-draft rankings
+        dk_rankings = pd.read_csv('csv-templates/DkPreDraftRankings.csv')
+
+        # Function to find the closest matching player ID
+        def find_player_id(name, position):
+            matches = dk_rankings[(dk_rankings['Name'].str.contains(name, case=False, na=False)) & 
+                                  (dk_rankings['Position'] == position)]
+            if not matches.empty:
+                return matches.iloc[0]['ID']
+            return None
+
+        # Rename columns to match DraftKings format
         df = df.rename(columns={
-            'name': 'Player',
+            'name': 'Name',
             'team': 'Team',
             'position': 'Position',
             'etr_rank': 'ETR Rank',
@@ -99,7 +110,14 @@ def transform_data(df):
             'adp_diff': 'ADP Diff'
         })
 
-        # Add any additional transformations required for DraftKings format
+        # Add ID column by matching player names and positions
+        df['ID'] = df.apply(lambda row: find_player_id(row['Name'], row['Position']), axis=1)
+
+        # Reorder columns to match DraftKings format
+        df = df[['ID', 'Name', 'Position', 'ADP', 'Team', 'ETR Rank', 'ETR Pos Rank', 'ADP Pos Rank', 'ADP Diff']]
+
+        # Fill any missing values with empty strings
+        df = df.fillna('')
 
         logging.info("Data transformation completed successfully")
         return df
