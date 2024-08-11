@@ -127,12 +127,14 @@ def fetch_player_rankings(page, url):
                 return rows.map(row => {
                     const cells = row.querySelectorAll('td');
                     return {
-                        rank: cells[0].textContent.trim(),
-                        name: cells[1].textContent.trim(),
+                        name: cells[0].textContent.trim(),
+                        team: cells[1].textContent.trim(),
                         position: cells[2].textContent.trim(),
-                        team: cells[3].textContent.trim(),
-                        bye_week: cells[4].textContent.trim(),
-                        best_ball_points: cells[5].textContent.trim()
+                        etr_rank: cells[3].textContent.trim(),
+                        etr_pos_rank: cells[4].textContent.trim(),
+                        adp: cells[5].textContent.trim(),
+                        adp_pos_rank: cells[6].textContent.trim(),
+                        adp_diff: cells[7].textContent.trim(),
                     };
                 });
             }
