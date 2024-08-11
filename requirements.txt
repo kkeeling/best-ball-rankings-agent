@@ -4,3 +4,7 @@ supabase==1.0.3
 pylint==2.17.5
 black==23.9.1
 python-dotenv==1.0.0
+schedule==1.2.1
+colorama==0.4.6
+halo==0.0.31
+requests==2.31.0
