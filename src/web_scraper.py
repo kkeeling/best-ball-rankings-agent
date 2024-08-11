@@ -151,47 +151,11 @@ def fetch_player_rankings(page, url):
     except PlaywrightTimeoutError:
         raise Exception("Failed to load rankings page")
 
-def download_csv(page, url, output_path):
-    """
-    Download the CSV file from the rankings page.
-
-    Args:
-        page: Playwright page object
-        url (str): The URL of the rankings page
-        output_path (str): The path to save the downloaded CSV
-
-    Raises:
-        Exception: If CSV download fails
-    """
-    try:
-        logging.info(f"Navigating to URL: {url}")
-        page.goto(url, timeout=60000)  # Increase page load timeout to 60 seconds
-        
-        logging.info("Waiting for CSV download link to be visible")
-        page.wait_for_selector('a.ninja-forms-field[href*=".csv"]', state="visible", timeout=30000)
-        
-        logging.info("Initiating CSV download")
-        with page.expect_download(timeout=120000) as download_info:  # Increase download timeout to 120 seconds
-            page.click('a.ninja-forms-field[href*=".csv"]')
-        
-        download = download_info.value
-        logging.info(f"Download initiated, saving to: {output_path}")
-        download.save_as(output_path)
-        logging.info("CSV download completed successfully")
-    except PlaywrightTimeoutError as e:
-        logging.error(f"CSV download timed out: {str(e)}")
-        print_page_content(page)  # Print page content for debugging
-        raise Exception(f"CSV download timed out: {str(e)}")
-    except Exception as e:
-        logging.error(f"An error occurred during CSV download: {str(e)}")
-        print_page_content(page)  # Print page content for debugging
-        raise
 
 def main():
     url = "https://establishtherun.com/etrs-top-300-for-draftkings-best-ball-rankings-updates-9am-daily/"
     username = os.environ.get("ETR_USERNAME")
     password = os.environ.get("ETR_PASSWORD")
-    csv_output_path = "rankings.csv"
 
     if not username or not password:
         raise WebScraperError("ETR_USERNAME and ETR_PASSWORD environment variables must be set")
@@ -200,7 +164,6 @@ def main():
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             context = browser.new_context(
-                accept_downloads=True,
                 viewport={'width': 1920, 'height': 1080},
                 user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
                 java_script_enabled=True,
@@ -221,13 +184,6 @@ def main():
             try:
                 page = login(context, username, password)
                 rankings = fetch_player_rankings(page, url)
-                
-                try:
-                    download_csv(page, url, csv_output_path)
-                    print(f"CSV file downloaded to {csv_output_path}")
-                except WebScraperError as csv_error:
-                    logging.error(f"Failed to download CSV: {str(csv_error)}")
-                    print("CSV download failed, but continuing with fetched rankings.")
 
                 print(f"Fetched {len(rankings)} player rankings")
                 print(rankings[:5])  # Print the first 5 rankings as a sample
