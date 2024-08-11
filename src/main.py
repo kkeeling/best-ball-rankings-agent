@@ -18,9 +18,12 @@ def main():
             # Process the scraped data
             processed_data = process_data(scraped_data)
             
-            # TODO: Add code to save or further process the data
-            logging.info(f"Processed {len(processed_data)} player rankings")
-            print(processed_data.head())  # Print the first few rows of processed data
+            if processed_data is not None:
+                # TODO: Add code to save or further process the data
+                logging.info(f"Processed {len(processed_data)} player rankings")
+                print(processed_data.head())  # Print the first few rows of processed data
+            else:
+                logging.warning("Data processing failed.")
         else:
             logging.warning("No data was scraped. Skipping data processing.")
     except Exception as e:

@@ -125,12 +125,12 @@ def transform_data(df):
         logging.error(f"Error during data transformation: {str(e)}")
         raise DataProcessingError(f"Failed to transform data: {str(e)}")
 
-def process_data(file_path):
+def process_data(data):
     """
-    Main function to process the data: read CSV, clean, and transform.
+    Main function to process the data: read CSV or use provided data, clean, and transform.
 
     Args:
-        file_path (str): Path to the CSV file
+        data (str or list): Path to the CSV file or list of dictionaries containing player data
 
     Returns:
         pd.DataFrame: Processed DataFrame
@@ -139,11 +139,20 @@ def process_data(file_path):
         DataProcessingError: If there's an error during any step of data processing
     """
     try:
-        df = read_csv(file_path)
+        if isinstance(data, str):
+            df = read_csv(data)
+        elif isinstance(data, list):
+            df = pd.DataFrame(data)
+        else:
+            raise DataProcessingError(f"Invalid data type: {type(data)}. Expected str or list.")
+        
         df = clean_data(df)
         df = transform_data(df)
         logging.info("Data processing completed successfully")
         return df
     except DataProcessingError as e:
         logging.error(f"Data processing failed: {str(e)}")
-        raise
+        return None
+    except Exception as e:
+        logging.error(f"An unexpected error occurred during data processing: {str(e)}")
+        return None
