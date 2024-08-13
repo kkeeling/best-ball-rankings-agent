@@ -34,6 +34,9 @@ def navigate_to_rankings_page(page):
     except PlaywrightTimeoutError:
         logging.error("Navigation to rankings page failed")
         raise DraftKingsUploaderError("Navigation to rankings page failed.")
+    except Exception as e:
+        logging.error(f"Unexpected error during navigation: {str(e)}")
+        raise DraftKingsUploaderError(f"Unexpected error during navigation: {str(e)}")
 
 def upload_csv_file(page, file_path):
     """Upload the CSV file to DraftKings."""
@@ -48,11 +51,14 @@ def upload_csv_file(page, file_path):
         file_chooser.set_files(file_path)
         
         page.click('text="Upload"')
-        page.wait_for_selector('text="Pre-Draft Rankings CSV uploaded successfully! Please remember to save your rankings."')
+        page.wait_for_selector('text="Pre-Draft Rankings CSV uploaded successfully! Please remember to save your rankings."', timeout=30000)
         logging.info("CSV file uploaded successfully")
     except PlaywrightTimeoutError:
-        logging.error("CSV file upload failed")
-        raise DraftKingsUploaderError("CSV file upload failed.")
+        logging.error("CSV file upload failed or upload confirmation not received")
+        raise DraftKingsUploaderError("CSV file upload failed or upload confirmation not received.")
+    except Exception as e:
+        logging.error(f"Unexpected error during CSV upload: {str(e)}")
+        raise DraftKingsUploaderError(f"Unexpected error during CSV upload: {str(e)}")
 
 def save_rankings(page):
     """Save the uploaded rankings."""
