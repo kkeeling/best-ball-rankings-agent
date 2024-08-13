@@ -30,113 +30,34 @@
     </style>
 </head>
 <body>
-    <h1>User Stories: Sprint 1 - Best Ball Rankings Agent</h1>
-
-    <p>This document outlines the user stories for Sprint 1 of the Best Ball Rankings Agent project, focusing on project setup and core functionality.</p>
+    <!-- Previous user stories [US-001], [US-002], and [US-003] remain unchanged -->
 
     <div class="user-story">
-        <h2>[US-001] Project Environment Setup</h2>
+        <h2>[US-004] Error Handling and Console Logging Setup</h2>
         <p><strong>As a</strong> developer,<br>
-        <strong>I want to</strong> set up the development environment,<br>
-        <strong>So that</strong> I can start developing the Best Ball Rankings Agent efficiently.</p>
+        <strong>I want to</strong> implement basic error handling and console logging,<br>
+        <strong>So that</strong> I can track the execution of the script and identify issues early in development.</p>
         
         <h3>Tasks:</h3>
         <div class="task">
-            <p>[T-001-01] Install Python 3.12</p>
-            <p>[T-001-02] Set up Conda virtual environment</p>
-            <p>[T-001-03] Initialize git repository and create initial project structure</p>
-            <p>[T-001-04] Create requirements.txt with initial dependencies</p>
-            <p>[T-001-05] Set up linting and code formatting tools (e.g., pylint, black)</p>
+            <p>[T-004-01] Set up Python's built-in logging module for console output</p>
+            <p>[T-004-02] Implement basic error handling in web scraping module</p>
+            <p>[T-004-03] Implement basic error handling in data processing module</p>
+            <p>[T-004-04] Define appropriate log levels for different types of messages</p>
+            <p>[T-004-05] Add logging statements to key points in the application flow</p>
         </div>
 
         <h3>Acceptance Criteria:</h3>
         <ul>
-            <li>Python 3.12 is installed and accessible from the command line</li>
-            <li>Conda virtual environment is created and activated</li>
-            <li>Git repository is initialized with a proper .gitignore file</li>
-            <li>Project structure includes folders for source code, tests, and documentation</li>
-            <li>requirements.txt file includes all necessary initial dependencies</li>
-            <li>Linting and code formatting tools are configured and working</li>
+            <li>Logging is set up and writes to the console with appropriate formatting</li>
+            <li>Web scraping module catches and logs common exceptions</li>
+            <li>Data processing module catches and logs common exceptions</li>
+            <li>Different log levels (e.g., INFO, WARNING, ERROR) are used appropriately</li>
+            <li>Key events and errors are logged with appropriate detail</li>
+            <li>Logged messages are clear and provide useful information for debugging</li>
         </ul>
     </div>
 
-    <div class="user-story">
-        <h2>[US-002] Web Scraping Module</h2>
-        <p><strong>As a</strong> developer,<br>
-        <strong>I want to</strong> create a web scraping module using Playwright,<br>
-        <strong>So that</strong> I can retrieve the latest rankings from establishtherun.com.</p>
-        
-        <h3>Tasks:</h3>
-        <div class="task">
-            <p>[T-002-01] Install Playwright and its dependencies</p>
-            <p>[T-002-02] Implement function to navigate to establishtherun.com login page</p>
-            <p>[T-002-03] Implement authentication function using provided credentials</p>
-            <p>[T-002-04] Create function to navigate to the rankings page</p>
-            <p>[T-002-05] Implement CSV download functionality</p>
-            <p>[T-002-06] Add error handling for network issues and authentication failures</p>
-        </div>
-
-        <h3>Acceptance Criteria:</h3>
-        <ul>
-            <li>Playwright is installed and configured correctly</li>
-            <li>Script can successfully log in to establishtherun.com</li>
-            <li>Rankings page can be accessed after authentication</li>
-            <li>CSV file with rankings can be downloaded successfully</li>
-            <li>Appropriate error messages are displayed for network issues or authentication failures</li>
-        </ul>
-    </div>
-
-    <div class="user-story">
-        <h2>[US-003] Data Processing Module</h2>
-        <p><strong>As a</strong> developer,<br>
-        <strong>I want to</strong> create a data processing module using Pandas,<br>
-        <strong>So that</strong> I can manipulate and format the retrieved rankings data.</p>
-        
-        <h3>Tasks:</h3>
-        <div class="task">
-            <p>[T-003-01] Install Pandas and its dependencies</p>
-            <p>[T-003-02] Implement function to read downloaded CSV file</p>
-            <p>[T-003-03] Create data cleaning function to handle inconsistencies or missing values</p>
-            <p>[T-003-04] Implement data transformation function to match DraftKings format</p>
-            <p>[T-003-05] Add error handling for data processing issues</p>
-        </div>
-
-        <h3>Acceptance Criteria:</h3>
-        <ul>
-            <li>Pandas is installed and configured correctly</li>
-            <li>CSV file can be read and converted into a Pandas DataFrame</li>
-            <li>Data cleaning function successfully handles common data issues</li>
-            <li>Data is correctly transformed to match DraftKings format</li>
-            <li>Appropriate error messages are displayed for data processing issues</li>
-        </ul>
-    </div>
-
-    <div class="user-story">
-        <h2>[US-004] Supabase Integration</h2>
-        <p><strong>As a</strong> developer,<br>
-        <strong>I want to</strong> integrate Supabase for data storage,<br>
-        <strong>So that</strong> I can persistently store retrieved and processed rankings data.</p>
-        
-        <h3>Tasks:</h3>
-        <div class="task">
-            <p>[T-004-01] Install Supabase Python client</p>
-            <p>[T-004-02] Set up Supabase project and obtain API credentials</p>
-            <p>[T-004-03] Implement function to establish connection with Supabase</p>
-            <p>[T-004-04] Create function to store raw CSV data in Supabase</p>
-            <p>[T-004-05] Implement function to store processed rankings data in Supabase</p>
-            <p>[T-004-06] Add error handling for database connection and storage issues</p>
-        </div>
-
-        <h3>Acceptance Criteria:</h3>
-        <ul>
-            <li>Supabase Python client is installed and configured correctly</li>
-            <li>Connection to Supabase can be established successfully</li>
-            <li>Raw CSV data can be stored in Supabase</li>
-            <li>Processed rankings data can be stored in Supabase</li>
-            <li>Appropriate error messages are displayed for database connection or storage issues</li>
-        </ul>
-    </div>
-
-    <p>These user stories cover the essential tasks for Sprint 1, focusing on setting up the development environment and implementing core functionalities such as web scraping, data processing, and data storage. Each story is broken down into specific tasks and includes clear acceptance criteria to guide development and testing.</p>
+    <p>These user stories cover the essential tasks for Sprint 1, focusing on setting up the development environment and implementing core functionalities such as web scraping and data processing. Each story is broken down into specific tasks and includes clear acceptance criteria to guide development and testing.</p>
 </body>
 </html>

@@ -47,8 +47,6 @@
             <li><strong>Web Scraping:</strong> Playwright (latest version)</li>
             <li><strong>Scheduling:</strong> Schedule (latest version)</li>
             <li><strong>Command Line Interface:</strong> Colorama (latest version), Halo (latest version)</li>
-            <li><strong>Data Storage:</strong> Supabase Python Client (latest version)</li>
-            <li><strong>AI Processing:</strong> Anthropic Claude API (Claude 3.5 Sonnet)</li>
             <li><strong>HTTP Requests:</strong> Requests (latest version)</li>
             <li><strong>CSV Processing:</strong> Pandas (latest version)</li>
             <li><strong>Environment Variables:</strong> python-dotenv (latest version)</li>
@@ -66,18 +64,15 @@
         <p>Implements Playwright to navigate websites, handle authentication, and retrieve data.</p>
 
         <h3>3.3 Data Processor</h3>
-        <p>Uses Pandas for CSV manipulation and the Anthropic Claude API for AI-powered data formatting.</p>
+        <p>Uses Pandas for CSV manipulation and formatting according to DraftKings requirements.</p>
 
-        <h3>3.4 Data Storage</h3>
-        <p>Integrates with Supabase for storing retrieved and processed data.</p>
-
-        <h3>3.5 DraftKings Uploader</h3>
+        <h3>3.4 DraftKings Uploader</h3>
         <p>Employs Playwright for navigating the DraftKings website and uploading formatted rankings.</p>
 
-        <h3>3.6 Notifier</h3>
+        <h3>3.5 Notifier</h3>
         <p>Implements Slack notifications using the slack_sdk library to send updates about the agent's operations and results.</p>
 
-        <h3>3.7 Command Line Interface</h3>
+        <h3>3.6 Command Line Interface</h3>
         <p>Utilizes Colorama for colored output and Halo for loading indicators.</p>
     </div>
 
@@ -87,8 +82,7 @@
         <ol>
             <li>Schedule trigger (9:30 AM daily)</li>
             <li>Web scraping of establishtherun.com</li>
-            <li>Data processing and AI formatting</li>
-            <li>Data storage in Supabase</li>
+            <li>Data processing and formatting</li>
             <li>Upload to DraftKings</li>
             <li>Send Slack notification</li>
         </ol>
@@ -106,7 +100,7 @@
 
     <div class="section">
         <h2>7. Scalability and Future Enhancements</h2>
-        <p>Design the application with modularity in mind, allowing for easy addition of new data sources, fantasy sports platforms, or notification methods. Use configuration files to manage variable elements like URLs, data mappings, and notification preferences.</p>
+        <p>Design the application with modularity in mind, allowing for easy addition of new data sources, fantasy sports platforms, or notification methods. Use configuration files to manage variable elements like URLs and notification preferences.</p>
     </div>
 
     <div class="section">
