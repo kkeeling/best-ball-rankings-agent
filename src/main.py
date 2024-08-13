@@ -10,6 +10,9 @@ import logging
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+import tempfile
+import os
+
 def main():
     try:
         # Run the web scraper
@@ -26,14 +29,23 @@ def main():
                 # Load configuration for DraftKings uploader
                 config = load_config()
 
+                # Create a temporary CSV file
+                with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.csv') as temp_csv:
+                    processed_data.to_csv(temp_csv.name, index=False)
+                    temp_csv_path = temp_csv.name
+
                 # Upload processed data to DraftKings
-                if all([config['DRAFTKINGS_USERNAME'], config['DRAFTKINGS_PASSWORD'], config['CSV_FILE_PATH']]):
-                    upload_rankings_to_draftkings(
-                        config['DRAFTKINGS_USERNAME'],
-                        config['DRAFTKINGS_PASSWORD'],
-                        config['CSV_FILE_PATH']
-                    )
-                    logging.info("Data processing and uploading to DraftKings completed successfully.")
+                if all([config['DRAFTKINGS_USERNAME'], config['DRAFTKINGS_PASSWORD']]):
+                    try:
+                        upload_rankings_to_draftkings(
+                            config['DRAFTKINGS_USERNAME'],
+                            config['DRAFTKINGS_PASSWORD'],
+                            temp_csv_path
+                        )
+                        logging.info("Data processing and uploading to DraftKings completed successfully.")
+                    finally:
+                        # Clean up the temporary file
+                        os.unlink(temp_csv_path)
                 else:
                     logging.error("Missing required configuration for DraftKings upload. Please check your .env file or environment variables.")
             else:

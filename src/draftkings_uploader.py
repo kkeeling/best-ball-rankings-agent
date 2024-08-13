@@ -67,6 +67,7 @@ def save_rankings(page):
 
 def upload_rankings_to_draftkings(username, password, csv_file_path):
     """Main function to upload rankings to DraftKings."""
+    config = load_config()
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=config.get('HEADLESS', True))
         page = browser.new_page()
