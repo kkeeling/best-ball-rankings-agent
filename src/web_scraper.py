@@ -185,21 +185,20 @@ def main():
                 page = login(context, username, password)
                 rankings = fetch_player_rankings(page, url)
 
-                print(f"Fetched {len(rankings)} player rankings")
-                print(rankings[:5])  # Print the first 5 rankings as a sample
+                logging.info(f"Fetched {len(rankings)} player rankings")
+                return rankings  # Return the rankings instead of printing them
 
             except WebScraperError as e:
                 logging.error(f"A web scraping error occurred: {str(e)}")
-                print(f"A web scraping error occurred: {str(e)}")
             except PlaywrightError as e:
                 logging.error(f"A Playwright error occurred: {str(e)}")
-                print(f"A Playwright error occurred: {str(e)}")
             finally:
                 context.close()
                 browser.close()
     except Exception as e:
         logging.error(f"An unexpected error occurred: {str(e)}")
-        print(f"An unexpected error occurred: {str(e)}")
+    
+    return None  # Return None if scraping failed
 
 if __name__ == "__main__":
     main()

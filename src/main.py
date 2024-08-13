@@ -19,7 +19,6 @@ def main():
             processed_data = process_data(scraped_data)
             
             if processed_data is not None:
-                # TODO: Add code to save or further process the data
                 logging.info(f"Processed {len(processed_data)} player rankings")
                 print(processed_data.head())  # Print the first few rows of processed data
             else:

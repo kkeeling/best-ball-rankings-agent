@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Stories: Sprint 2 - Best Ball Rankings Agent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .user-story {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        .task {
+            margin-left: 20px;
+            border-left: 2px solid #bdc3c7;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Stories: Sprint 2 - Best Ball Rankings Agent</h1>
+
+    <p>This document outlines the revised user stories for Sprint 2 of the Best Ball Rankings Agent project, focusing on the DraftKings uploader, scheduling functionality, and system enhancements.</p>
+
+    <div class="user-story">
+        <h2>[US-005] DraftKings Uploader Module</h2>
+        <p><strong>As a</strong> developer,<br>
+        <strong>I want to</strong> create a DraftKings uploader module using Playwright,<br>
+        <strong>So that</strong> the formatted rankings can be automatically uploaded to DraftKings.</p>
+        
+        <h3>Tasks:</h3>
+        <div class="task">
+            <p>[T-005-01] Implement function to navigate to DraftKings login page</p>
+            <p>[T-005-02] Create authentication function for DraftKings using provided credentials</p>
+            <p>[T-005-03] Implement navigation to the rankings upload page</p>
+            <p>[T-005-04] Create function to upload the formatted CSV file</p>
+            <p>[T-005-05] Implement verification of successful upload</p>
+            <p>[T-005-06] Add error handling for login failures, navigation issues, and upload errors</p>
+        </div>
+
+        <h3>Acceptance Criteria:</h3>
+        <ul>
+            <li>Script can successfully log in to DraftKings</li>
+            <li>Rankings upload page can be accessed after authentication</li>
+            <li>Formatted CSV file can be uploaded successfully</li>
+            <li>Upload success can be verified programmatically</li>
+            <li>Appropriate error messages are displayed for login, navigation, or upload issues</li>
+        </ul>
+    </div>
+
+    <div class="user-story">
+        <h2>[US-006] Scheduling Functionality</h2>
+        <p><strong>As a</strong> developer,<br>
+        <strong>I want to</strong> implement scheduling functionality using the Schedule library,<br>
+        <strong>So that</strong> the rankings retrieval and upload process can be automated to run daily at 9:30 AM.</p>
+        
+        <h3>Tasks:</h3>
+        <div class="task">
+            <p>[T-006-01] Install and configure the Schedule library</p>
+            <p>[T-006-02] Create a main function that orchestrates the entire process flow</p>
+            <p>[T-006-03] Implement scheduling logic to run the main function daily at 9:30 AM</p>
+            <p>[T-006-04] Add error handling for scheduling issues</p>
+            <p>[T-006-05] Implement logging for scheduled runs and their outcomes</p>
+        </div>
+
+        <h3>Acceptance Criteria:</h3>
+        <ul>
+            <li>Schedule library is installed and configured correctly</li>
+            <li>Main function successfully orchestrates the entire process from data retrieval to upload</li>
+            <li>Scheduling logic correctly triggers the process daily at 9:30 AM</li>
+            <li>Error handling successfully manages any scheduling issues</li>
+            <li>Logs are generated for each scheduled run, including start time, end time, and outcome</li>
+        </ul>
+    </div>
+
+    <div class="user-story">
+        <h2>[US-007] Error Handling and Logging Enhancements</h2>
+        <p><strong>As a</strong> developer,<br>
+        <strong>I want to</strong> implement comprehensive error handling and logging across all modules,<br>
+        <strong>So that</strong> issues can be quickly identified, diagnosed, and resolved.</p>
+        
+        <h3>Tasks:</h3>
+        <div class="task">
+            <p>[T-007-01] Implement a centralized logging system using Python's logging module</p>
+            <p>[T-007-02] Create custom exception classes for specific error scenarios</p>
+            <p>[T-007-03] Implement try-except blocks in all major functions</p>
+            <p>[T-007-04] Add detailed logging statements throughout the codebase</p>
+            <p>[T-007-05] Implement a system to aggregate and report errors</p>
+        </div>
+
+        <h3>Acceptance Criteria:</h3>
+        <ul>
+            <li>Centralized logging system is in place and capturing logs from all modules</li>
+            <li>Custom exception classes are defined and used appropriately</li>
+            <li>All major functions have proper error handling with try-except blocks</li>
+            <li>Logs provide detailed information about the application's operation and any issues</li>
+            <li>Error reporting system can aggregate and present errors in a clear, actionable format</li>
+        </ul>
+    </div>
+
+    <div class="user-story">
+        <h2>[US-008] Performance Optimization</h2>
+        <p><strong>As a</strong> developer,<br>
+        <strong>I want to</strong> optimize the performance of the entire workflow,<br>
+        <strong>So that</strong> the rankings retrieval and upload process is as efficient as possible.</p>
+        
+        <h3>Tasks:</h3>
+        <div class="task">
+            <p>[T-008-01] Profile the existing code to identify performance bottlenecks</p>
+            <p>[T-008-02] Optimize data processing functions for speed and memory efficiency</p>
+            <p>[T-008-03] Implement caching mechanisms where appropriate</p>
+            <p>[T-008-04] Optimize database queries and interactions</p>
+            <p>[T-008-05] Implement parallel processing for independent tasks where possible</p>
+        </div>
+
+        <h3>Acceptance Criteria:</h3>
+        <ul>
+            <li>Overall process execution time is reduced by at least 20%</li>
+            <li>Memory usage is optimized and stays within acceptable limits</li>
+            <li>Database interactions are efficient and do not cause bottlenecks</li>
+            <li>Parallel processing is implemented where it provides significant performance gains</li>
+            <li>The system can handle the daily workload without performance degradation</li>
+        </ul>
+    </div>
+
+    <p>These revised user stories cover the essential tasks for Sprint 2, focusing on the DraftKings uploader development, scheduling functionality, enhanced error handling and logging, and performance optimization. Each story is broken down into specific tasks and includes clear acceptance criteria to guide development and testing.</p>
+</body>
+</html>
