@@ -92,17 +92,5 @@ def load_config():
         'HEADLESS': os.getenv('HEADLESS', 'True').lower() == 'true'
     }
 
-if __name__ == "__main__":
-    config = load_config()
-    
-    if not all([config['DRAFTKINGS_USERNAME'], config['DRAFTKINGS_PASSWORD'], config['CSV_FILE_PATH']]):
-        logging.error("Missing required configuration. Please check your .env file or environment variables.")
-    else:
-        try:
-            upload_rankings_to_draftkings(
-                config['DRAFTKINGS_USERNAME'],
-                config['DRAFTKINGS_PASSWORD'],
-                config['CSV_FILE_PATH']
-            )
-        except Exception as e:
-            logging.error(f"An unexpected error occurred: {str(e)}")
+# The main function has been removed as it's no longer necessary.
+# The upload_rankings_to_draftkings function is now called directly from src/main.py
