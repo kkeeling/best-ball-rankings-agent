@@ -15,14 +15,26 @@ def login_to_draftkings(page, username, password):
     try:
         logging.info("Attempting to log in to DraftKings...")
         page.goto("https://myaccount.draftkings.com/login?returnPath=%2flobby")
+        logging.info("Login page loaded. Filling in credentials...")
         page.fill('input[name="username"]', username)
         page.fill('input[name="password"]', password)
+        logging.info("Credentials filled. Submitting login form...")
         page.click('button[type="submit"]')
-        page.wait_for_load_state('networkidle')
-        logging.info("Login successful")
+        logging.info("Waiting for login process to complete...")
+        page.wait_for_load_state('networkidle', timeout=60000)  # Increased timeout to 60 seconds
+        
+        # Check if login was successful
+        if page.url.startswith("https://myaccount.draftkings.com/"):
+            logging.info("Login successful")
+        else:
+            logging.error(f"Login failed. Current URL: {page.url}")
+            raise DraftKingsUploaderError("Login to DraftKings failed. Unexpected redirect.")
     except PlaywrightTimeoutError:
-        logging.error("Login to DraftKings failed")
-        raise DraftKingsUploaderError("Login to DraftKings failed.")
+        logging.error("Login to DraftKings timed out")
+        raise DraftKingsUploaderError("Login to DraftKings timed out.")
+    except Exception as e:
+        logging.error(f"Unexpected error during login: {str(e)}")
+        raise DraftKingsUploaderError(f"Login to DraftKings failed: {str(e)}")
 
 def navigate_to_rankings_page(page):
     """Navigate to the rankings upload page."""
