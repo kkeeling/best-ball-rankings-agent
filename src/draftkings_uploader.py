@@ -14,21 +14,28 @@ def login_to_draftkings(page, username, password):
     """Log in to DraftKings."""
     try:
         logging.info("Attempting to log in to DraftKings...")
-        page.goto("https://myaccount.draftkings.com/login?returnPath=%2flobby")
+        page.goto("https://myaccount.draftkings.com/login?returnPath=%2flobby", timeout=60000)
         logging.info("Login page loaded. Filling in credentials...")
         page.fill('input[name="username"]', username)
         page.fill('input[name="password"]', password)
         logging.info("Credentials filled. Submitting login form...")
         page.click('button[type="submit"]')
         logging.info("Waiting for login process to complete...")
-        page.wait_for_load_state('networkidle', timeout=60000)  # Increased timeout to 60 seconds
         
-        # Check if login was successful
-        if page.url.startswith("https://myaccount.draftkings.com/"):
+        # Wait for either successful login or error message
+        login_result = page.wait_for_selector('text="Welcome" >> visible=true, text="Invalid username or password" >> visible=true', timeout=60000)
+        
+        if login_result.inner_text() == "Welcome":
             logging.info("Login successful")
         else:
-            logging.error(f"Login failed. Current URL: {page.url}")
+            logging.error("Login failed. Invalid username or password.")
+            raise DraftKingsUploaderError("Login to DraftKings failed. Invalid username or password.")
+        
+        # Additional check for unexpected redirects
+        if not page.url.startswith("https://myaccount.draftkings.com/"):
+            logging.error(f"Login failed. Unexpected redirect. Current URL: {page.url}")
             raise DraftKingsUploaderError("Login to DraftKings failed. Unexpected redirect.")
+        
     except PlaywrightTimeoutError:
         logging.error("Login to DraftKings timed out")
         raise DraftKingsUploaderError("Login to DraftKings timed out.")
