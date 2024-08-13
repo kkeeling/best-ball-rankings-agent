@@ -14,16 +14,16 @@ def login_to_draftkings(page, username, password):
     """Log in to DraftKings."""
     try:
         logging.info("Attempting to log in to DraftKings...")
-        page.goto("https://myaccount.draftkings.com/login?returnPath=%2flobby", timeout=60000)
+        page.goto("https://myaccount.draftkings.com/login?returnPath=%2flobby", timeout=30000)
         logging.info("Login page loaded. Filling in credentials...")
-        page.fill('input[name="username"]', username)
-        page.fill('input[name="password"]', password)
+        page.fill('input[name="EmailOrUsername"]', username)
+        page.fill('input[name="Password"]', password)
         logging.info("Credentials filled. Submitting login form...")
         page.click('button[type="submit"]')
         logging.info("Waiting for login process to complete...")
         
         # Wait for either successful login or error message
-        login_result = page.wait_for_selector('text="Welcome" >> visible=true, text="Invalid username or password" >> visible=true', timeout=60000)
+        login_result = page.wait_for_selector('text="Welcome" >> visible=true, text="Invalid username or password" >> visible=true', timeout=30000)
         
         if login_result.inner_text() == "Welcome":
             logging.info("Login successful")
