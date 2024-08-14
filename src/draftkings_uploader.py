@@ -4,7 +4,17 @@ from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeo
 from dotenv import load_dotenv
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+log_format = '%(asctime)s - %(levelname)s - %(message)s'
+logging.basicConfig(level=logging.INFO, format=log_format)
+
+# Create a file handler
+file_handler = logging.FileHandler('draftkings_uploader.log')
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(logging.Formatter(log_format))
+
+# Get the root logger and add the file handler
+root_logger = logging.getLogger()
+root_logger.addHandler(file_handler)
 
 class DraftKingsUploaderError(Exception):
     """Custom exception for DraftKings uploader errors."""
