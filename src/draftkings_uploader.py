@@ -14,7 +14,7 @@ def login_to_draftkings(page, username, password):
     """Log in to DraftKings."""
     try:
         logging.info("Attempting to log in to DraftKings...")
-        page.goto("https://myaccount.draftkings.com/login?returnPath=%2flobby", timeout=30000)
+        page.goto("https://myaccount.draftkings.com/login?returnPath=%2flobby", timeout=60000)
         logging.info("Login page loaded. Filling in credentials...")
         page.fill('input[name="EmailOrUsername"]', username)
         page.fill('input[name="Password"]', password)
@@ -24,28 +24,31 @@ def login_to_draftkings(page, username, password):
         
         # Wait for either successful login redirect or error message
         try:
-            login_result = page.wait_for_selector('text="Invalid username or password" >> visible=true', timeout=30000, state='attached')
+            login_result = page.wait_for_selector('text="Invalid username or password" >> visible=true', timeout=60000, state='attached')
             
             if login_result and login_result.is_visible():
                 logging.error("Login failed. Invalid username or password.")
                 raise DraftKingsUploaderError("Login to DraftKings failed. Invalid username or password.")
             
             # Check for successful login redirect
-            page.wait_for_url("https://www.draftkings.com/lobby", timeout=30000)
+            page.wait_for_url("https://www.draftkings.com/lobby", timeout=60000)
             logging.info("Login successful. Redirected to lobby.")
         except PlaywrightTimeoutError:
             logging.error(f"Login process timed out. Current URL: {page.url}")
-            # logging.error(f"Page content: {page.content()}")
+            logging.error(f"Page title: {page.title()}")
+            logging.error(f"Page content: {page.content()}")
             raise DraftKingsUploaderError("Login to DraftKings timed out. Please check the logs for more details.")
         
     except PlaywrightTimeoutError:
         logging.error(f"Timeout occurred. Current URL: {page.url}")
-        # logging.error(f"Page content: {page.content()}")
+        logging.error(f"Page title: {page.title()}")
+        logging.error(f"Page content: {page.content()}")
         raise DraftKingsUploaderError("Login to DraftKings timed out. Please check the logs for more details.")
     except Exception as e:
         logging.error(f"Unexpected error during login: {str(e)}")
         logging.error(f"Current URL: {page.url}")
-        # logging.error(f"Page content: {page.content()}")
+        logging.error(f"Page title: {page.title()}")
+        logging.error(f"Page content: {page.content()}")
         raise DraftKingsUploaderError(f"Login to DraftKings failed: {str(e)}")
 
 def navigate_to_rankings_page(page):
