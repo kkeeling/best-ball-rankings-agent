@@ -22,17 +22,18 @@ def login_to_draftkings(page, username, password):
         page.click('button[type="submit"]')
         logging.info("Waiting for login process to complete...")
         
-        # Wait for either successful login or error message
-        login_result = page.wait_for_selector('text="Welcome" >> visible=true, text="Invalid username or password" >> visible=true', timeout=30000)
+        # Wait for either successful login redirect or error message
+        login_result = page.wait_for_selector('text="Invalid username or password" >> visible=true', timeout=30000, state='attached')
         
-        if login_result.inner_text() == "Welcome":
-            logging.info("Login successful")
-        else:
+        if login_result and login_result.is_visible():
             logging.error("Login failed. Invalid username or password.")
             raise DraftKingsUploaderError("Login to DraftKings failed. Invalid username or password.")
         
-        # Additional check for unexpected redirects
-        if not page.url.startswith("https://myaccount.draftkings.com/"):
+        # Check for successful login redirect
+        try:
+            page.wait_for_url("https://www.draftkings.com/lobby", timeout=30000)
+            logging.info("Login successful. Redirected to lobby.")
+        except PlaywrightTimeoutError:
             logging.error(f"Login failed. Unexpected redirect. Current URL: {page.url}")
             raise DraftKingsUploaderError("Login to DraftKings failed. Unexpected redirect.")
         
